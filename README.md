@@ -3,6 +3,9 @@ Trello: https://trello.com/b/CVEqfIOC/lw-crypto
 
 Spec Sheet: https://docs.google.com/document/d/1BKly3LA2Svv-t_KixOrGgIdR4fKdQtUMnaPj-9vjuE8/edit
 
+Naive Baseline Model: https://www.tutorialspoint.com/time_series/time_series_naive_methods.htm
+
+Gridsearch HyperParams: https://machinelearningmastery.com/grid-search-hyperparameters-deep-learning-models-python-keras/
 
 # Project Notes 
 20220816 - https://docs.google.com/document/d/1zS93xKPt-FLykjTJSjSv78_Z-riXiqAw5tALXtLWi2o/edit?usp=sharing
