@@ -8,11 +8,10 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This program built for i386-apple-darwin11.3.0
  
 
-# Make data base, printed on Thu Aug 18 13:46:22 2022
+# Make data base, printed on Thu Sep  8 10:56:16 2022
 
 # Variables
 
- 
 # automatic
 <D = $(patsubst %/,%,$(dir $<))
 # automatic
@@ -21,6 +20,8 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 ELECTRON_NO_ATTACH_CONSOLE = 1
 # environment
 HOMEBREW_NO_ANALYTICS = 1
+# environment
+NVM_INC = /Users/dbd/.nvm/versions/node/v17.8.0/include/node
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # automatic
@@ -46,11 +47,13 @@ PYPI_USERNAME = <AUTHOR>
 # environment
 VSCODE_CWD = /Users/dbd/Code/MahamadouNiakate/crypto_pred
 # environment
-PATH = /Users/dbd/opt/miniconda3/bin:/Users/dbd/opt/miniconda3/condabin:/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin:bin:node_modules/.bin:/Users/dbd/.pyenv/plugins/pyenv-virtualenv/shims:/Users/dbd/.pyenv/shims:/Users/dbd/.rbenv/bin:/Users/dbd/.pyenv/plugins/pyenv-virtualenv/shims:/Users/dbd/.pyenv/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/usr/local/sbin
+PATH = /Users/dbd/opt/miniconda3/bin:/Users/dbd/opt/miniconda3/condabin:/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin:bin:node_modules/.bin:/Users/dbd/.nvm/versions/node/v17.8.0/bin:/Users/dbd/.pyenv/plugins/pyenv-virtualenv/shims:/Users/dbd/.pyenv/shims:/Users/dbd/.rbenv/bin:/Users/dbd/.pyenv/plugins/pyenv-virtualenv/shims:/Users/dbd/.pyenv/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/usr/local/sbin
 # environment
 LSCOLORS = Gxfxcxdxbxegedabagacad
 # environment
-VIRTUAL_ENV = /Users/dbd/.pyenv/versions/3.8.12/envs/lewagon3
+NVM_BIN = /Users/dbd/.nvm/versions/node/v17.8.0/bin
+# environment
+LaunchInstanceID = D8B49055-CEDE-4160-ABF0-6BE1A231E92D
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
@@ -58,7 +61,7 @@ PYENV_ROOT = /Users/dbd/.pyenv
 # default
 .FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
 # environment
-SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.1BwFRJCrFg/Listeners
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.MjyXENNP5r/Listeners
 # automatic
 %F = $(notdir $%)
 # environment
@@ -78,7 +81,7 @@ MAKEFILEPATH := /Applications/Xcode.app/Contents/Developer/Makefiles
 # environment
 VSCODE_CLI = 1
 # environment
-VSCODE_CODE_CACHE_PATH = /Users/dbd/Library/Application Support/Code/CachedData/6d9b74a70ca9c7733b29f0456fd8195364076dda
+VSCODE_CODE_CACHE_PATH = /Users/dbd/Library/Application Support/Code/CachedData/784b0177c56c607789f9638da7b6bf3230d47a8c
 # environment
 LOGNAME = dbd
 # environment
@@ -88,11 +91,15 @@ APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
 # environment
 CONDA_PROMPT_MODIFIER = (base) 
 # environment
+NVM_CD_FLAGS = -q
+# environment
 PYTHONBREAKPOINT = ipdb.set_trace
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # automatic
 ^D = $(patsubst %/,%,$(dir $^))
+# environment
+CONDA_DEFAULT_ENV = base
 # environment
 XPC_FLAGS = 0x0
 # default
@@ -108,7 +115,7 @@ USER = dbd
 # makefile
 .DEFAULT_GOAL := install_requirements
 # environment
-TERM_SESSION_ID = DD1DAF29-FB6A-4260-A336-71C9631BECF3
+TERM_SESSION_ID = 7F41F3ED-39B7-46EC-A802-D4B053CEEAE9
 # environment
 LESS = -R
 # automatic
@@ -118,7 +125,6 @@ CONDA_SHLVL = 1
 # default
 MAKE_COMMAND := /Applications/Xcode.app/Contents/Developer/usr/bin/make
 # environment
- 
 TERM_PROGRAM = Apple_Terminal
 # default
 .VARIABLES := 
@@ -127,7 +133,7 @@ TMPDIR = /var/folders/qp/5z2vy03j04s0yht5rwlccksw0000gn/T/
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /Users/dbd/Library/Application Support/Code/1.70.1-main.sock
+VSCODE_IPC_HOOK = /Users/dbd/Library/Application Support/Code/1.71.0-main.sock
 # environment
 MallocNanoZone = 0
 # environment
@@ -141,7 +147,9 @@ MFLAGS = -Rrqp
 # environment
 TERM_PROGRAM_VERSION = 444
 # environment
-XPC_SERVICE_NAME = application.com.microsoft.VSCode.25792614.25792620.15B4F1C4-7F1E-4119-976D-0811D735ACE6
+NVM_DIR = /Users/dbd/.nvm
+# environment
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.30965418.30965425.6A076111-BE61-4554-9AAC-96708FE35ADD
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # automatic
@@ -165,7 +173,7 @@ PYENV_VIRTUALENV_DISABLE_PROMPT = 1
 # environment
 CONDA_PYTHON_EXE = /Users/dbd/opt/miniconda3/bin/python
 # environment
-PYENV_VIRTUAL_ENV = /Users/dbd/.pyenv/versions/3.8.12/envs/lewagon3
+SECURITYSESSIONID = 186b2
 # automatic
 ^F = $(notdir $^)
 # default
@@ -183,13 +191,13 @@ CONDA_PREFIX = /Users/dbd/opt/miniconda3
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 11699
+VSCODE_PID = 69140
 # environment
 _CE_CONDA = 
 # environment
 LANG = C
 # variable set hash-table stats:
-# Load=87/1024=8%, Rehash=0, Collisions=3/113=3%
+# Load=92/1024=9%, Rehash=0, Collisions=3/118=3%
 
 # Pattern-specific Variable Values
 
@@ -197,9 +205,9 @@ LANG = C
 
 # Directories
 
-# . (device 16777230, inode 26933761): 15 files, no impossibilities.
+# . (device 16777229, inode 26933761): 19 files, no impossibilities.
 
-# 15 files, no impossibilities in 1 directories.
+# 19 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -219,7 +227,6 @@ all: clean install test black check_code
 #  Command-line target.
 #  Implicit rule search has been done.
 #  File does not exist.
- 
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # variable set hash-table stats:
@@ -321,6 +328,7 @@ clean:
 # | := 
 # automatic
 # < := 
+ 
 # automatic
 # ^ := 
 # automatic
@@ -373,6 +381,6 @@ install:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Thu Aug 18 13:46:22 2022
+# Finished Make data base on Thu Sep  8 10:56:16 2022
 
  
