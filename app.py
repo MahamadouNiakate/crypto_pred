@@ -152,11 +152,6 @@ def standard_lr(test, X_train, y_train, X_test, y_test):
     X_test_predict_df = pd.DataFrame(X_test_predict, index=X_test.index, columns=['Y_PRED'])
     predict_df = test.merge(X_test_predict_df, how='left', on='Date')
 
-
-    #dbd todo: Plot chart of actual v/s prredicted movements
-    # predict_df['month_ave_close_shift_diff_percent'].plot(c='red')
-    # predict_df['Y_PRED'].plot(c='green')
-
     return predict_df
 
 def calc_sliding_window(window_size, input_df, debug=False):
@@ -239,7 +234,7 @@ def calc_with_params(start_date, bet_size):
         w = len(list(filter(lambda x: (x > 0), gain_loss_list)))
         p = len(list(filter(lambda x: (x == 0), gain_loss_list)))
         # print(f'b gain_losslist: {w}/{l}/{p}::{len(gain_loss_list)}::{gain_loss_list}--{test_df.shape}')
-        # print(f'gain_loss_list: {gain_loss_list}')
+        # st.write(f'gain_loss_list: {gain_loss_list}')
         gain_loss = sum(gain_loss_list)
 
         gain_loss_bet_size_list = calc_gain_loss_2(test_df, gain_percent, 'Y_PRED', bet_size, False)
@@ -247,7 +242,7 @@ def calc_with_params(start_date, bet_size):
         w_100 = len(list(filter(lambda x: (x > 0), gain_loss_bet_size_list)))
         p_100 = len(list(filter(lambda x: (x == 0), gain_loss_bet_size_list)))
         # print(f'gain_loss_100_list: {w_100}/{l_100}/{p_100}::{len(gain_loss_bet_size_list)}::{gain_loss_bet_size_list}--{test_df.shape}')
-        # print(f'gain_loss_bet_size_list: {gain_loss_bet_size_list}')
+        print(f'gain_loss_bet_size_list: {gain_loss_bet_size_list}')
         gain_loss_bet_size = sum(gain_loss_bet_size_list)
 
         loop_df = pd.DataFrame(data=[[window_size, gain_percent, model_name, gain_loss,
@@ -263,6 +258,9 @@ def calc_with_params(start_date, bet_size):
   result_df["gl_loss_100"] = result_df["gl_loss_100"].astype(int)
   result_df["gl_pass_100"] = result_df["gl_pass_100"].astype(int)
   # st.write(f'd result_df.shape: {result_df.shape}')
+
+  result_df["gain_loss"] = round(result_df["gain_loss"], 2)
+  result_df["gain_loss_100"] = round(result_df["gain_loss_100"], 2)
 
   result_df = result_df.sort_values(by='gain_loss_100', ascending=False)
   # st.write(f'e result_df.shape: {result_df.shape}')
@@ -283,33 +281,38 @@ btc_month_mean, month_close_df, test, X_train, y_train, X_test, y_test = preproc
 
 '''------------------------------------------------'''
 
-from_date = '2010-01-01'
+# from_date = '2010-01-01'
+# st.write(f'Starting: {from_date}')
+# a = calc_with_params(from_date, 100)
+# st.write(a.head())
+
+# from_date = '2020-01-01'
+# st.write(f'Starting: {from_date}')
+# a = calc_with_params(from_date, 100)
+# st.write(a.head())
+
+# from_date = '2021-01-01'
+# st.write(f'Starting: {from_date}')
+# a = calc_with_params(from_date, 100)
+# st.write(a.head())
+
+from_date = '2021-07-01'
 st.write(f'Starting: {from_date}')
 a = calc_with_params(from_date, 100)
-st.write(a.head())
+st.write(a.head(10))
 
-from_date = '2020-01-01'
-st.write(f'Starting: {from_date}')
-a = calc_with_params(from_date, 100)
-st.write(a.head())
+# from_date = '2022-01-01'
+# st.write(f'Starting: {from_date}')
+# a = calc_with_params(from_date, 100)
+# st.write(a.head())
 
-from_date = '2021-01-01'
-st.write(f'Starting: {from_date}')
-a = calc_with_params(from_date, 100)
-st.write(a.head())
+# with st.form("my_form"):
 
-from_date = '2022-01-01'
-st.write(f'Starting: {from_date}')
-a = calc_with_params(from_date, 100)
-st.write(a.head())
+#     from_date = st.text_input('from date YYYY-MM-DD')
 
-with st.form("my_form"):
-
-    from_date = st.text_input('from date YYYY-MM-DD')
-
-    # Every form must have a submit button.
-    submitted = st.form_submit_button("Submit")
-    if submitted:
-        st.write("from_date", from_date, "invest_amount", 100)
-        user_result = calc_with_params(from_date, 100)
-        st.write(user_result.head())
+#     # Every form must have a submit button.
+#     submitted = st.form_submit_button("Submit")
+#     if submitted:
+#         st.write("from_date", from_date, "invest_amount", 100)
+#         user_result = calc_with_params(from_date, 100)
+#         st.write(user_result.head())
