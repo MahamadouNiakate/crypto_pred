@@ -1,6 +1,7 @@
 import streamlit as st
 
 import pandas as pd
+import numpy as np
 import yfinance as yf
 from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.seasonal import seasonal_decompose
@@ -142,6 +143,54 @@ def calc_gain_loss_2(df, threshold, column, investment_amount, debug=False):
 #   return sum(gain_loss)
   return gain_loss
 
+
+
+
+
+
+
+'''----------------------'''
+'''----------------------'''
+
+
+# def calc_gain_loss_3(df, threshold, column, investment_amount, debug=False):
+#   print(f'======calc_gain_loss_3')
+'''
+return:
+
+gain/loss
+dict date:portfolio_gain_loss
+
+
+'''
+
+
+
+#   gain_loss = {}
+#   df.columns
+#   for index, row in df.iterrows():
+
+#     break
+#     if row[column] > threshold:
+#       if debug:
+#         print(f'{index}::{row[column]}::{row["gain_loss_percent"]}')
+
+#       # gain_loss.append(row['Close_shift'] - row['Close'])
+#       gain_loss.append(investment_amount * row['gain_loss_percent'])
+#     else:
+#       gain_loss.append(0)
+
+#   if debug:
+#     print(f'GAIN/LOSS: {sum(gain_loss)}')
+
+# #   return sum(gain_loss)
+#   return gain_loss
+
+
+'''----------------------'''
+'''----------------------'''
+
+
 def standard_lr(test, X_train, y_train, X_test, y_test):
 
     lr = LinearRegression()
@@ -242,14 +291,20 @@ def calc_with_params(start_date, bet_size):
         w_100 = len(list(filter(lambda x: (x > 0), gain_loss_bet_size_list)))
         p_100 = len(list(filter(lambda x: (x == 0), gain_loss_bet_size_list)))
         # print(f'gain_loss_100_list: {w_100}/{l_100}/{p_100}::{len(gain_loss_bet_size_list)}::{gain_loss_bet_size_list}--{test_df.shape}')
-        print(f'gain_loss_bet_size_list: {gain_loss_bet_size_list}')
+        # print(f'gain_loss_bet_size_list: {gain_loss_bet_size_list}')
+
+        # dostuff = calc_gain_loss_3(test_df, gain_percent, 'Y_PRED', bet_size, True)
+
+        cum_gain_loss_100 = np.cumsum(np.array(gain_loss_bet_size_list))
         gain_loss_bet_size = sum(gain_loss_bet_size_list)
+        # print(f'gain_loss_bet_size_list: {gain_loss_bet_size_list}')
+        # print(f'cum_gain_loss_100: {cum_gain_loss_100}')
 
         loop_df = pd.DataFrame(data=[[window_size, gain_percent, model_name, gain_loss,
-                                      w, l, p, gain_loss_bet_size, w_100, l_100, p_100]],
+                                      w, l, p, gain_loss_bet_size, w_100, l_100, p_100, cum_gain_loss_100]],
                                columns=['window', 'percent', 'model_name', 'gain_loss',
                                         'gl_win', 'gl_loss', 'gl_pass', f'gain_loss_{bet_size}',
-                                        'gl_win_100', 'gl_loss_100', 'gl_pass_100'])
+                                        'gl_win_100', 'gl_loss_100', 'gl_pass_100', 'cum_gain_loss_100'])
 
         # print(f'-->{result_df.shape}, {loop_df.shape}, {len(gain_loss_bet_size_list)}')
         result_df = pd.concat([result_df, loop_df], ignore_index=True)
@@ -264,17 +319,82 @@ def calc_with_params(start_date, bet_size):
 
   result_df = result_df.sort_values(by='gain_loss_100', ascending=False)
   # st.write(f'e result_df.shape: {result_df.shape}')
-  result_df = result_df[['window', 'percent', 'model_name', 'gain_loss_100', 'gl_win_100', 'gl_loss_100', 'gl_pass_100']]
+
+  result_df = result_df[['window', 'percent', 'model_name', 'gain_loss_100', 'gl_win_100', 'gl_loss_100', 'gl_pass_100', 'cum_gain_loss_100']]
   # # st.write(f'f result_df.shape: {result_df.shape}')
   result_df = result_df.rename(columns={"window": "window", "percent": "threshold", "model_name": "model",
                                         "gain_loss_100": "gain_loss", "gl_win_100": "win",
-                                        "gl_loss_100": "loss", "gl_pass_100": "pass"})
+                                        "gl_loss_100": "loss", "gl_pass_100": "pass", "cum_gain_loss_100":"cum_gain_loss_100"})
   # # st.write(f'g result_df.shape: {result_df.shape}')
   result_df = result_df.assign(hack='').set_index('hack')
   # st.write(f'h result_df.shape: {result_df.shape}')
 
+
+
+
   return result_df
 
+def draw_charts(df):
+
+    min_len = 100
+    max_len = 0
+    #find max/min length
+    for loc in range(df.shape[0]):
+
+        if len(df.iloc[loc]['cum_gain_loss_100']) > max_len:
+            max_len = len(df.iloc[loc]['cum_gain_loss_100'])
+
+        if len(df.iloc[loc]['cum_gain_loss_100']) < min_len:
+            min_len = len(df.iloc[loc]['cum_gain_loss_100'])
+    # print(f'min_len: {min_len}')
+    # print(f'max_len: {max_len}')
+
+    #bring all arrays into the same length
+    for loc in range(df.shape[0]):
+        loop_array = df['cum_gain_loss_100'].iloc[loc]
+        loop_list = loop_array.tolist()
+        while len(loop_list) < max_len:
+            # print(f'lengthening: {type(loop_array)}')
+
+            loop_list.insert(0, -1)
+            # loop_list = loop_list.insert(0, -1)
+        loop_array = np.asarray(loop_list)
+        # print(f'A len->{len(loop_array)}')
+
+        df['cum_gain_loss_100'].iloc[loc] = loop_array
+        # print(f'loop_array: {len(loop_array)}')
+
+    #setup our dataframe for the line graph
+    chart_df_data = []
+    for loc in range(df.shape[0]):
+        data = df['cum_gain_loss_100'].iloc[loc]
+        # print(f'A data{loc}:  {data.shape}')
+        # print(f'B data{loc}:  {type(data)}')
+        # print(f'C data{loc}:  {data.reshape(-1, 1).shape}')
+
+        chart_df_data.append(data.reshape(-1, 1))
+    # print(f'len: {len(chart_df_data)}')
+    # print(f'type: {type(chart_df_data)}')
+    # print(f'chart_df_data.shape: {chart_df_data.shape}')
+
+    y=np.array([np.array(xi) for xi in chart_df_data])
+    # print(f'type: {type(y)}')
+    print(f'shape: {y.shape}')
+    y = y.reshape(y.shape[1], y.shape[0])
+    # print(f'shape: {y.shape}')
+
+    df0 = pd.DataFrame(y)
+    # print(f'df0.shape: {df0.shape}')
+    st.line_chart(df0)
+
+    # df = pd.DataFrame(
+    #         np.random.randn(20, 3),
+    #         columns=['a', 'b', 'c']
+    #     )
+    # st.line_chart(df)
+
+    # print(f'df0.shape: {df0.shape}')
+    # print(f'df.shape: {df.shape}')
 '''------------------------------------------------'''
 
 btc_month_mean, month_close_df, test, X_train, y_train, X_test, y_test = preprocess(btc)
@@ -296,10 +416,41 @@ btc_month_mean, month_close_df, test, X_train, y_train, X_test, y_test = preproc
 # a = calc_with_params(from_date, 100)
 # st.write(a.head())
 
-from_date = '2021-07-01'
+to_index = 3
+
+# from_date = '2021-07-01'
+# st.write(f'Starting: {from_date}')
+# a = calc_with_params(from_date, 100)
+# a_prime = a[0:to_index]
+# st.write(a_prime.drop(columns=['cum_gain_loss_100']).head(to_index))
+# draw_charts(a_prime)
+
+from_date = '2020-07-01'
 st.write(f'Starting: {from_date}')
 a = calc_with_params(from_date, 100)
-st.write(a.head(10))
+a_prime = a[0:to_index]
+# st.write(a_prime.head(to_index))
+st.write(a_prime.drop(columns=['cum_gain_loss_100']).head(to_index))
+draw_charts(a_prime)
+
+from_date = '2011-07-01'
+st.write(f'Starting: {from_date}')
+a = calc_with_params(from_date, 100)
+a_prime = a[0:to_index]
+# st.write(a_prime.head(to_index))
+st.write(a_prime.drop(columns=['cum_gain_loss_100']).head(to_index))
+draw_charts(a_prime)
+
+from_date = '2011-07-01'
+st.write(f'Starting: {from_date}')
+a = calc_with_params(from_date, 100)
+a_prime = a[0:5]
+# st.write(a_prime.head(to_index))
+st.write(a_prime.drop(columns=['cum_gain_loss_100']).head(to_index))
+draw_charts(a_prime)
+
+# st.write(a_prime.iloc[0]['cum_gain_loss_100'])
+
 
 # from_date = '2022-01-01'
 # st.write(f'Starting: {from_date}')
