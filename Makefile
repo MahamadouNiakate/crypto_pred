@@ -57,3 +57,6 @@ pypi:
 #Streamlit
 run_streamlit:
 	@streamlit run app.py
+
+run_streamlit2:
+	@streamlit run app2.py
